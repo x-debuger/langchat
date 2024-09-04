@@ -77,7 +77,7 @@
   });
 
   const getDarkTheme = computed(() => (designStore.darkTheme ? darkTheme : undefined));
-  const showWatermark = true;
+  const showWatermark = false;
 </script>
 
 <style lang="less">

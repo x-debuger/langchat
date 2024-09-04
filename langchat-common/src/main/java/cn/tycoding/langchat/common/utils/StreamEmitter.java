@@ -30,7 +30,7 @@ public class StreamEmitter {
     private final SseEmitter emitter;
 
     public StreamEmitter() {
-        emitter = new SseEmitter(5 * 60 * 1000L);
+        emitter = new SseEmitter(50 * 60 * 1000L);
     }
 
     public SseEmitter get() {

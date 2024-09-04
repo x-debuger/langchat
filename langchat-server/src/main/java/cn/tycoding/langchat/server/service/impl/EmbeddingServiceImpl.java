@@ -16,6 +16,7 @@
 
 package cn.tycoding.langchat.server.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.biz.entity.AigcDocs;
 import cn.tycoding.langchat.biz.entity.AigcDocsSlice;
@@ -66,6 +67,9 @@ public class EmbeddingServiceImpl implements EmbeddingService {
         }
         // remove from embedding store
         List<String> vectorIds = aigcKnowledgeService.listSliceVectorIdsOfDoc(docsId);
+        if(CollUtil.isEmpty(vectorIds)){
+            return;
+        }
         embeddingStore.removeAll(vectorIds);
         // remove from docSlice
         aigcKnowledgeService.removeSlicesOfDoc(docsId);

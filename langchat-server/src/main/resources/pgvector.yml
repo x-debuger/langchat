@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pgvector-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pgvector
+  template:
+    metadata:
+      labels:
+        app: pgvector
+    spec:
+      containers:
+      - name: pgvector
+        image: pgvector/pgvector:pg16
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_USER
+          value: root
+        - name: POSTGRES_PASSWORD
+          value: root
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          subPath: pgvector-data/data/
+          name: pgvector-persistent-storage
+      volumes:
+      - name: pgvector-persistent-storage
+        persistentVolumeClaim:
+          claimName: common-pvc
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: pgvector-service
+spec:
+  selector:
+    app: pgvector
+  ports:
+  - protocol: TCP
+    port: 54333
+    targetPort: 5432
+    nodePort: 30003
+  type: NodePort
